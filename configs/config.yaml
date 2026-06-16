@@ -1,0 +1,51 @@
+project:
+  name: sar_flood_ml
+  description: Prepared-raster SAR flood mapping workflow.
+
+paths:
+  image: /mnt/c/Users/amehedi/Downloads/SAR-Urban-Flood-GEE-M/Houston_DL_Sent-1.tif
+  samples: /mnt/c/Users/amehedi/Downloads/SAR-Urban-Flood-GEE-M/Houston_fl_samples_train_test_swapped.csv
+  aoi: null
+  output_dir: /mnt/c/Users/amehedi/Downloads/SAR-Urban-Flood-GEE-M/outputs_local
+  artifact_dir: artifacts
+  raster_output_dir: rasters
+  report_dir: reports
+
+raster:
+  band_names: [VV, VV_1, VH, VH_1]
+  nodata_label: 0
+  probability_nodata: -9999.0
+  compress: lzw
+
+samples:
+  label_column: classvalue
+  split_column: sample
+  train_value: train
+  test_value: test
+  flood_class: 1
+  coordinate_columns: null
+
+features:
+  active_set: sar_4band
+  sets:
+    sar_4band: [VV, VV_1, VH, VH_1]
+    vv_vh: [VV, VH]
+    change_only: [VV_1, VH_1]
+    sar_with_ratio: [VV, VV_1, VH, VH_1, VV_div_VH]
+
+models:
+  active: [random_forest, xgboost, cnn_1d]
+  random_state: 42
+  config_dir: configs/models
+
+experiments:
+  repeated_splits:
+    enabled: true
+    n_repeats: 30
+    test_size: 0.30
+    models: [random_forest, xgboost]
+  learning_curve:
+    enabled: true
+    train_fracs: [0.10, 0.20, 0.40, 0.60, 0.80, 1.00]
+    n_repeats: 10
+    models: [random_forest, xgboost]

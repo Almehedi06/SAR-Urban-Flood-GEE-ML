@@ -1,0 +1,4 @@
+n_estimators: 500
+min_samples_leaf: 2
+class_weight: balanced
+n_jobs: -1
