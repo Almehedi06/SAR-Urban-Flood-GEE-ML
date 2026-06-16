@@ -1,0 +1,1051 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var l8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2"),
+    l9 = ee.ImageCollection("LANDSAT/LC09/C02/T1_L2"),
+    srtm = ee.Image("USGS/SRTMGL1_003"),
+    roi = 
+    /* color: #d63000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[-95.75135216137012, 29.790705296921974],
+          [-95.75135216137012, 29.699788918269327],
+          [-95.60132011791309, 29.699788918269327],
+          [-95.60132011791309, 29.790705296921974]]], null, false),
+    flood = 
+    /* color: #ff0e07 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      }
+    ] */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.6865048165935, 29.734157646363553],
+                  [-95.6865048165935, 29.725511808268095],
+                  [-95.66916701752123, 29.725511808268095],
+                  [-95.66916701752123, 29.734157646363553]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.66916701752123, 29.73982175697228],
+                  [-95.66916701752123, 29.73535011728335],
+                  [-95.66041228729662, 29.73535011728335],
+                  [-95.66041228729662, 29.73982175697228]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.7008769633587, 29.725003640823445],
+                  [-95.7008769633587, 29.720456800595183],
+                  [-95.6968429210003, 29.720456800595183],
+                  [-95.6968429210003, 29.725003640823445]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.69615627549248, 29.726792505098516],
+                  [-95.69615627549248, 29.725301787083907],
+                  [-95.694268000346, 29.725301787083907],
+                  [-95.694268000346, 29.726792505098516]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.69298054001885, 29.726494363267292],
+                  [-95.69298054001885, 29.723363820556976],
+                  [-95.68971897385674, 29.723363820556976],
+                  [-95.68971897385674, 29.726494363267292]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "4"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.6913497569378, 29.722320284617812],
+                  [-95.6913497569378, 29.72164943435562],
+                  [-95.69014812729912, 29.72164943435562],
+                  [-95.69014812729912, 29.722320284617812]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "5"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.69340969346123, 29.721574895160778],
+                  [-95.69340969346123, 29.720829500167724],
+                  [-95.69203640244561, 29.720829500167724],
+                  [-95.69203640244561, 29.721574895160778]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "6"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.69478298447686, 29.720158639940706],
+                  [-95.69478298447686, 29.71918961169655],
+                  [-95.69340969346123, 29.71918961169655],
+                  [-95.69340969346123, 29.720158639940706]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "7"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.69958950303155, 29.720084099638694],
+                  [-95.69958950303155, 29.719264152662856],
+                  [-95.69804455063897, 29.719264152662856],
+                  [-95.69804455063897, 29.720084099638694]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "8"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.69152141831475, 29.719935018868583],
+                  [-95.69152141831475, 29.719711397298237],
+                  [-95.6902339579876, 29.719711397298237],
+                  [-95.6902339579876, 29.719935018868583]]], null, false),
+            {
+              "classvalue": 1,
+              "system:index": "9"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68688656113702, 29.722916592197436]),
+            {
+              "classvalue": 1,
+              "system:index": "10"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68010593674737, 29.721574895160778]),
+            {
+              "classvalue": 1,
+              "system:index": "11"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.6818225505169, 29.72388558445741]),
+            {
+              "classvalue": 1,
+              "system:index": "12"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.6781318309124, 29.72396012193602]),
+            {
+              "classvalue": 1,
+              "system:index": "13"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.6789043071087, 29.72440734564508]),
+            {
+              "classvalue": 1,
+              "system:index": "14"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68491245530205, 29.721276737827864]),
+            {
+              "classvalue": 1,
+              "system:index": "15"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.66766048691827, 29.73037013797452]),
+            {
+              "classvalue": 1,
+              "system:index": "16"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.66628719590264, 29.73104092993653]),
+            {
+              "classvalue": 1,
+              "system:index": "17"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.6653430583294, 29.733947643277123]),
+            {
+              "classvalue": 1,
+              "system:index": "18"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.66293979905205, 29.733500462091296]),
+            {
+              "classvalue": 1,
+              "system:index": "19"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.66517139695245, 29.733500462091296]),
+            {
+              "classvalue": 1,
+              "system:index": "20"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68654323838311, 29.716729728753013]),
+            {
+              "classvalue": 1,
+              "system:index": "21"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.69358135483819, 29.72276751563471]),
+            {
+              "classvalue": 1,
+              "system:index": "22"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.72190548203545, 29.732009843741377]),
+            {
+              "classvalue": 1,
+              "system:index": "23"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.72190548203545, 29.731637185693117]),
+            {
+              "classvalue": 1,
+              "system:index": "24"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.72190548203545, 29.730519203242558]),
+            {
+              "classvalue": 1,
+              "system:index": "25"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.72181965134698, 29.729475741715145]),
+            {
+              "classvalue": 1,
+              "system:index": "26"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.63796306870537, 29.715686123837774]),
+            {
+              "classvalue": 1,
+              "system:index": "27"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.63547397873955, 29.7144188747122]),
+            {
+              "classvalue": 1,
+              "system:index": "28"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.64105297349053, 29.715313405167322]),
+            {
+              "classvalue": 1,
+              "system:index": "29"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.63547397873955, 29.71419524085298]),
+            {
+              "classvalue": 1,
+              "system:index": "30"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.63847805283623, 29.715238861267167]),
+            {
+              "classvalue": 1,
+              "system:index": "31"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.62560344956475, 29.71784786483678]),
+            {
+              "classvalue": 1,
+              "system:index": "32"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.62663341782647, 29.717698780745252]),
+            {
+              "classvalue": 1,
+              "system:index": "33"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.62732006333428, 29.71740061189786]),
+            {
+              "classvalue": 1,
+              "system:index": "34"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.62843586228448, 29.71702789959316]),
+            {
+              "classvalue": 1,
+              "system:index": "35"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.6294658305462, 29.71650610004166]),
+            {
+              "classvalue": 1,
+              "system:index": "36"
+            })]),
+    noflood = 
+    /* color: #0b4a8b */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      },
+      {
+        "type": "marker"
+      }
+    ] */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.62538642925003, 29.745687852422066],
+                  [-95.62538642925003, 29.742483385007954],
+                  [-95.62246818584183, 29.742483385007954],
+                  [-95.62246818584183, 29.745687852422066]]], null, false),
+            {
+              "classvalue": 2,
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.68521041911819, 29.75097872562244],
+                  [-95.68521041911819, 29.748296064248056],
+                  [-95.68109054607132, 29.748296064248056],
+                  [-95.68109054607132, 29.75097872562244]]], null, false),
+            {
+              "classvalue": 2,
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.61173934978225, 29.746209500215382],
+                  [-95.61173934978225, 29.742036241878328],
+                  [-95.60521621745804, 29.742036241878328],
+                  [-95.60521621745804, 29.746209500215382]]], null, false),
+            {
+              "classvalue": 2,
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.70602680466729, 29.742566987964203]),
+            {
+              "classvalue": 2,
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.7055976512249, 29.743684836133266]),
+            {
+              "classvalue": 2,
+              "system:index": "4"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.70319439194756, 29.74405744942036]),
+            {
+              "classvalue": 2,
+              "system:index": "5"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.70499683640557, 29.743461267496382]),
+            {
+              "classvalue": 2,
+              "system:index": "6"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.705254328471, 29.741374602848566]),
+            {
+              "classvalue": 2,
+              "system:index": "7"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.70285106919366, 29.743610313309706]),
+            {
+              "classvalue": 2,
+              "system:index": "8"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.70757175705987, 29.742417940600117]),
+            {
+              "classvalue": 2,
+              "system:index": "9"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.70757175705987, 29.745175280973697]),
+            {
+              "classvalue": 2,
+              "system:index": "10"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.70611263535577, 29.74033125424196]),
+            {
+              "classvalue": 2,
+              "system:index": "11"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.70310856125909, 29.742790558594937]),
+            {
+              "classvalue": 2,
+              "system:index": "12"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61451841065744, 29.762760856767976]),
+            {
+              "classvalue": 2,
+              "system:index": "13"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61434674928049, 29.763431432053558]),
+            {
+              "classvalue": 2,
+              "system:index": "14"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.6135742730842, 29.76350594014158]),
+            {
+              "classvalue": 2,
+              "system:index": "15"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68017888734201, 29.755086175592435]),
+            {
+              "classvalue": 2,
+              "system:index": "16"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68086553284982, 29.754937146839833]),
+            {
+              "classvalue": 2,
+              "system:index": "17"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68120885560373, 29.754788117865637]),
+            {
+              "classvalue": 2,
+              "system:index": "18"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68163800904611, 29.75434102961353]),
+            {
+              "classvalue": 2,
+              "system:index": "19"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.66713262269357, 29.76000400010966],
+                  [-95.66713262269357, 29.75888633391056],
+                  [-95.66567350098947, 29.75888633391056],
+                  [-95.66567350098947, 29.76000400010966]]], null, false),
+            {
+              "classvalue": 2,
+              "system:index": "20"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.66069532105783, 29.767305779157844],
+                  [-95.66069532105783, 29.767305779157844],
+                  [-95.65983701417306, 29.767305779157844],
+                  [-95.65983701417306, 29.767305779157844]]], null, false),
+            {
+              "classvalue": 2,
+              "system:index": "21"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-95.66086698243478, 29.76715676857822],
+                  [-95.66086698243478, 29.766262700445907],
+                  [-95.65854955384592, 29.766262700445907],
+                  [-95.65854955384592, 29.76715676857822]]], null, false),
+            {
+              "classvalue": 2,
+              "system:index": "22"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68318296143869, 29.751882008578942]),
+            {
+              "classvalue": 2,
+              "system:index": "23"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68043637940744, 29.753670393495998]),
+            {
+              "classvalue": 2,
+              "system:index": "24"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68163800904611, 29.752329107799564]),
+            {
+              "classvalue": 2,
+              "system:index": "25"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.67957807252267, 29.75270168896005]),
+            {
+              "classvalue": 2,
+              "system:index": "26"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61228681275705, 29.759407913021455]),
+            {
+              "classvalue": 2,
+              "system:index": "27"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61271596619943, 29.759556935125904]),
+            {
+              "classvalue": 2,
+              "system:index": "28"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61305928895334, 29.759184379449195]),
+            {
+              "classvalue": 2,
+              "system:index": "29"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61305928895334, 29.757917679788058]),
+            {
+              "classvalue": 2,
+              "system:index": "30"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61125684449533, 29.758513775740727]),
+            {
+              "classvalue": 2,
+              "system:index": "31"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.60636449525217, 29.765294117631566]),
+            {
+              "classvalue": 2,
+              "system:index": "32"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.60756612489084, 29.765368624334375]),
+            {
+              "classvalue": 2,
+              "system:index": "33"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.60765195557931, 29.76477256916051]),
+            {
+              "classvalue": 2,
+              "system:index": "34"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.60705114075998, 29.764325525452907]),
+            {
+              "classvalue": 2,
+              "system:index": "35"
+            })]),
+    DL_predicted_Houston = ee.Image("projects/ee-almehedi06/assets/DL_predicted_result_Houston"),
+    gsw = ee.Image("JRC/GSW1_2/GlobalSurfaceWater"),
+    hydrosheds = ee.Image("WWF/HydroSHEDS/03VFDEM");
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+// Dates 
+var duringStart = '2017-08-25'
+var duringEnd = '2017-09-05' 
+var dryStart = '2017-09-01'
+var dryEnd = '2017-12-31'   
+
+// Collection 
+var collection = ee.ImageCollection('COPERNICUS/S1_GRD')
+  .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+  .filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING'))
+  .filter(ee.Filter.eq('resolution_meters', 10))
+  .filterBounds(roi)
+  .select('VV', 'VH');  
+
+var duringCollection = collection.filterDate(duringStart, duringEnd)
+var dryCollection = collection.filterDate(dryStart,dryEnd)
+
+var during = duringCollection.mosaic().clip(roi);
+var dry = dryCollection.mosaic().clip(roi);
+
+//Division image
+var division = during.divide(dry);
+
+print(division)
+
+/////////////
+////EDA/////
+
+// // Create a histogram of the 'during' image
+// var histogram = ui.Chart.image.histogram({
+//   image: dry,
+//   region: roi,
+//   scale: 10, // Set the scale to match your image resolution, adjust as needed
+//   maxPixels: 1e9 // Adjust this value as needed to manage computation
+// });
+
+// // Add the histogram chart to the console
+// print(histogram);
+
+// /// Clip the pixel values of the 'during' image to the range -448 to 448
+// var clippedDivision = division.updateMask(division.gte(-15).and(division.lte(15)));
+
+// // Create a histogram of the clipped 'during' image
+// var histogram = ui.Chart.image.histogram({
+//   image: clippedDivision,
+//   region: roi,
+//   scale: 10, // Set the scale to match your image resolution, adjust as needed
+//   maxPixels: 1e9 // Adjust this value as needed to manage computation
+// });
+
+// // Add the histogram chart to the console
+// print(histogram);
+
+/////////////////
+///Image Coposite
+
+// Create an image composite for VV and VH bands from 'during' image
+var vvduring = during.select('VV');
+var vhduring = during.select('VH');
+
+Map.addLayer(vhduring, {}, 'during VV');
+
+// Visualize VV and VH bands from 'during' image
+var compositeduringVVVH = vvduring.visualize({min: -25, max: 0, palette: ['black', 'white']})
+  .addBands(vhduring.visualize({min: -25, max: 0, palette: ['black', 'white']}));
+
+// Display the composite image for VV and VH bands from 'during' image
+Map.addLayer(compositeduringVVVH, {}, 'Composite during VV/VH');
+
+// Visualize the division values
+var divisionVisualization = division.visualize({min: 0, max: 1, palette: ['blue', 'green']});
+
+// Create an RGB visualization combining VV, VH bands, and division values
+var compositeVVVHDivision = vvduring.addBands(division).addBands(vhduring);
+
+// Display the composite image for VV, VH bands, and division values
+Map.addLayer(compositeVVVHDivision, {}, 'Composite VV/VH/Division');
+
+print(compositeVVVHDivision)
+
+
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+
+// // Load Sentinel-1 data
+// var sentinel1 = ee.ImageCollection('COPERNICUS/S1_GRD')
+//   .filterBounds(roi)
+//   .filterDate('2023-01-01', '2023-12-31')
+//   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+//   .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+//   .filter(ee.Filter.eq('instrumentMode', 'IW'))
+//   .map(function(image) {
+//     var vv = image.select('VV').clip(roi);
+//     var vh = image.select('VH').clip(roi);
+//     return vv.addBands(vh).copyProperties(image, ['system:time_start']);
+//   });
+
+// // Create a composite (e.g., median) of Sentinel-1 images
+// var composite = sentinel1.median();
+
+// Variable info
+var classValue = [1, 2];
+var classNames = ['flood', 'noflood'];
+var classPalette = ['F08080', 'D2B48C',];
+var columns = ['VV', 'VV_1', 'VH', 'VH_1', 'classvalue', 'sample'];
+var features = ['VV', 'VV_1', 'VH', 'VH_1'];
+
+// Sampels 
+// Merge samples into one FeatureCollection
+var samples = flood.merge(noflood);
+
+// Split samples to train and test per class
+samples = ee.FeatureCollection(classValue.map(function(value){
+  var features = samples.filter(ee.Filter.eq('classvalue', value)).randomColumn();
+  var train = features.filter(ee.Filter.lte('random', 0.8)).map(function(feat){ return feat.set('sample', 'train')});
+  var test = features.filter(ee.Filter.gt('random', 0.8)).map(function(feat){ return feat.set('sample', 'test')});
+  return train.merge(test);
+})).flatten();
+
+// Extract samples
+var extract = compositeVVVHDivision.sampleRegions({
+  collection: samples,
+  scale: 30,
+  properties: ['sample', 'classvalue']
+});
+
+// Export image and samples
+Export.image.toDrive({
+  image: compositeVVVHDivision.toFloat(),
+  scale: 30,
+  maxPixels: 1e13,
+  region: roi,
+  crs: 'EPSG:4326',
+  folder: 'P3',
+  description: 'Houston_DL_Sent-1'
+});
+
+Export.table.toDrive({
+  collection: extract,
+  fileFormat: 'CSV',
+  selectors: columns,
+  description: 'Houston_fl_samples',
+  folder: 'P3'
+});
+
+
+// //////////////////////////////////////////////////////////
+// ////////////////////Post-processing///////////////////////
+
+// // Center the map on the image and add it to the map
+// Map.centerObject(DL_predicted_Houston, 10);
+// Map.addLayer(DL_predicted_Houston, {}, 'Your TIFF Image');
+
+// // Mask out area with permanent/semi-permanent water
+// var permanentWater = gsw.select('seasonality').gte(5).clip(roi)
+// var flooded = DL_predicted_Houston.where(permanentWater, 0).selfMask()
+// // Map.addLayer(permanentWater.selfMask(), {min:0, max:1, palette: ['blue']}, 'Permanent Water')
+
+// // Mask out areas with more than 5 percent slope using the HydroSHEDS DEM
+// var slopeThreshold = 6;
+// var terrain = ee.Algorithms.Terrain(hydrosheds);
+// var slope = terrain.select('slope');
+// var flooded = flooded.updateMask(slope.lt(slopeThreshold));
+// Map.addLayer(slope.gte(slopeThreshold).selfMask(), {min:0, max:1, palette: ['cyan']}, 'Steep Areas', false)
+
+// // Remove isolated pixels
+// // connectedPixelCount is Zoom dependent, so visual result will vary
+// var connectedPixelThreshold = 8;
+// var connections = flooded.connectedPixelCount(8)
+// var flooded = flooded.updateMask(connections.gt(connectedPixelThreshold))
+// Map.addLayer(connections.lte(connectedPixelThreshold).selfMask(), {min:0, max:1, palette: ['yellow']}, 'Disconnected Areas', false)
+
+// Map.addLayer(flooded, {}, 'Flooded Areas');
+
+
+// ///////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////
+// //############################
+// // Speckle Filtering Functions
+// //############################
+
+// // Function to convert from dB
+// function toNatural(img) {
+//   return ee.Image(10.0).pow(img.select(0).divide(10.0));
+// }
+
+// //Function to convert to dB
+// function toDB(img) {
+//   return ee.Image(img).log10().multiply(10.0);
+// }
+
+// //Apllying a Refined Lee Speckle filter as coded in the SNAP 3.0 S1TBX:
+
+// //https://github.com/senbox-org/s1tbx/blob/master/s1tbx-op-sar-processing/src/main/java/org/esa/s1tbx/sar/gpf/filtering/SpeckleFilters/RefinedLee.java
+// //Adapted by Guido Lemoine
+
+// // by Guido Lemoine
+// function RefinedLee(img) {
+//   // img must be in natural units, i.e. not in dB!
+//   // Set up 3x3 kernels 
+//   var weights3 = ee.List.repeat(ee.List.repeat(1,3),3);
+//   var kernel3 = ee.Kernel.fixed(3,3, weights3, 1, 1, false);
+
+//   var mean3 = img.reduceNeighborhood(ee.Reducer.mean(), kernel3);
+//   var variance3 = img.reduceNeighborhood(ee.Reducer.variance(), kernel3);
+
+//   // Use a sample of the 3x3 windows inside a 7x7 windows to determine gradients and directions
+//   var sample_weights = ee.List([[0,0,0,0,0,0,0], [0,1,0,1,0,1,0],[0,0,0,0,0,0,0], [0,1,0,1,0,1,0], [0,0,0,0,0,0,0], [0,1,0,1,0,1,0],[0,0,0,0,0,0,0]]);
+
+//   var sample_kernel = ee.Kernel.fixed(7,7, sample_weights, 3,3, false);
+
+//   // Calculate mean and variance for the sampled windows and store as 9 bands
+//   var sample_mean = mean3.neighborhoodToBands(sample_kernel); 
+//   var sample_var = variance3.neighborhoodToBands(sample_kernel);
+
+//   // Determine the 4 gradients for the sampled windows
+//   var gradients = sample_mean.select(1).subtract(sample_mean.select(7)).abs();
+//   gradients = gradients.addBands(sample_mean.select(6).subtract(sample_mean.select(2)).abs());
+//   gradients = gradients.addBands(sample_mean.select(3).subtract(sample_mean.select(5)).abs());
+//   gradients = gradients.addBands(sample_mean.select(0).subtract(sample_mean.select(8)).abs());
+
+//   // And find the maximum gradient amongst gradient bands
+//   var max_gradient = gradients.reduce(ee.Reducer.max());
+
+//   // Create a mask for band pixels that are the maximum gradient
+//   var gradmask = gradients.eq(max_gradient);
+
+//   // duplicate gradmask bands: each gradient represents 2 directions
+//   gradmask = gradmask.addBands(gradmask);
+
+//   // Determine the 8 directions
+//   var directions = sample_mean.select(1).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(7))).multiply(1);
+//   directions = directions.addBands(sample_mean.select(6).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(2))).multiply(2));
+//   directions = directions.addBands(sample_mean.select(3).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(5))).multiply(3));
+//   directions = directions.addBands(sample_mean.select(0).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(8))).multiply(4));
+//   // The next 4 are the not() of the previous 4
+//   directions = directions.addBands(directions.select(0).not().multiply(5));
+//   directions = directions.addBands(directions.select(1).not().multiply(6));
+//   directions = directions.addBands(directions.select(2).not().multiply(7));
+//   directions = directions.addBands(directions.select(3).not().multiply(8));
+
+//   // Mask all values that are not 1-8
+//   directions = directions.updateMask(gradmask);
+
+//   // "collapse" the stack into a singe band image (due to masking, each pixel has just one value (1-8) in it's directional band, and is otherwise masked)
+//   directions = directions.reduce(ee.Reducer.sum());  
+
+//   //var pal = ['ffffff','ff0000','ffff00', '00ff00', '00ffff', '0000ff', 'ff00ff', '000000'];
+//   //Map.addLayer(directions.reduce(ee.Reducer.sum()), {min:1, max:8, palette: pal}, 'Directions', false);
+
+//   var sample_stats = sample_var.divide(sample_mean.multiply(sample_mean));
+
+//   // Calculate localNoiseVariance
+//   var sigmaV = sample_stats.toArray().arraySort().arraySlice(0,0,5).arrayReduce(ee.Reducer.mean(), [0]);
+
+//   // Set up the 7*7 kernels for directional statistics
+//   var rect_weights = ee.List.repeat(ee.List.repeat(0,7),3).cat(ee.List.repeat(ee.List.repeat(1,7),4));
+
+//   var diag_weights = ee.List([[1,0,0,0,0,0,0], [1,1,0,0,0,0,0], [1,1,1,0,0,0,0], 
+//     [1,1,1,1,0,0,0], [1,1,1,1,1,0,0], [1,1,1,1,1,1,0], [1,1,1,1,1,1,1]]);
+
+//   var rect_kernel = ee.Kernel.fixed(7,7, rect_weights, 3, 3, false);
+//   var diag_kernel = ee.Kernel.fixed(7,7, diag_weights, 3, 3, false);
+
+//   // Create stacks for mean and variance using the original kernels. Mask with relevant direction.
+//   var dir_mean = img.reduceNeighborhood(ee.Reducer.mean(), rect_kernel).updateMask(directions.eq(1));
+//   var dir_var = img.reduceNeighborhood(ee.Reducer.variance(), rect_kernel).updateMask(directions.eq(1));
+
+//   dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), diag_kernel).updateMask(directions.eq(2)));
+//   dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), diag_kernel).updateMask(directions.eq(2)));
+
+//   // and add the bands for rotated kernels
+//   for (var i=1; i<4; i++) {
+//     dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), rect_kernel.rotate(i)).updateMask(directions.eq(2*i+1)));
+//     dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), rect_kernel.rotate(i)).updateMask(directions.eq(2*i+1)));
+//     dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), diag_kernel.rotate(i)).updateMask(directions.eq(2*i+2)));
+//     dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), diag_kernel.rotate(i)).updateMask(directions.eq(2*i+2)));
+//   }
+
+//   // "collapse" the stack into a single band image (due to masking, each pixel has just one value in it's directional band, and is otherwise masked)
+//   dir_mean = dir_mean.reduce(ee.Reducer.sum());
+//   dir_var = dir_var.reduce(ee.Reducer.sum());
+
+//   // A finally generate the filtered value
+//   var varX = dir_var.subtract(dir_mean.multiply(dir_mean).multiply(sigmaV)).divide(sigmaV.add(1.0));
+
+//   var b = varX.divide(dir_var);
+
+//   var result = dir_mean.add(b.multiply(img.subtract(dir_mean)));
+//   return(result.arrayFlatten([['sum']]));
+// }
+
+// ///////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////
+
+

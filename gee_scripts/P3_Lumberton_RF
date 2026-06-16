@@ -1,0 +1,597 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var gsw = ee.Image("JRC/GSW1_2/GlobalSurfaceWater"),
+    hydrosheds = ee.Image("WWF/HydroSHEDS/03VFDEM"),
+    geometry = 
+    /* color: #d63000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[-79.03435364878693, 34.63132908252804],
+          [-79.03435364878693, 34.6108810019235],
+          [-79.01152268565217, 34.6108810019235],
+          [-79.01152268565217, 34.63132908252804]]], null, false),
+    flooded = 
+    /* color: #98ff00 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.02775826681089, 34.622596271890785],
+                  [-79.02775826681089, 34.62229608902709],
+                  [-79.02711453664732, 34.62229608902709],
+                  [-79.02711453664732, 34.622596271890785]]], null, false),
+            {
+              "LC": 1,
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.02747931707334, 34.62211951036472],
+                  [-79.02747931707334, 34.62173103598501],
+                  [-79.02659955251646, 34.62173103598501],
+                  [-79.02659955251646, 34.62211951036472]]], null, false),
+            {
+              "LC": 1,
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.02668538320493, 34.62158977212332],
+                  [-79.02668538320493, 34.62128958561883],
+                  [-79.02580561864805, 34.62128958561883],
+                  [-79.02580561864805, 34.62158977212332]]], null, false),
+            {
+              "LC": 1,
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.03061213720274, 34.62363807458217],
+                  [-79.03061213720274, 34.623337895487026],
+                  [-79.0299040340228, 34.623337895487026],
+                  [-79.0299040340228, 34.62363807458217]]], null, false),
+            {
+              "LC": 1,
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.03262915838194, 34.62079515842088],
+                  [-79.03262915838194, 34.62042433608934],
+                  [-79.03209271657896, 34.62042433608934],
+                  [-79.03209271657896, 34.62079515842088]]], null, false),
+            {
+              "LC": 1,
+              "system:index": "4"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.03007569539976, 34.62487409470928],
+                  [-79.03007569539976, 34.62455626272075],
+                  [-79.02951779592466, 34.62455626272075],
+                  [-79.02951779592466, 34.62487409470928]]], null, false),
+            {
+              "LC": 1,
+              "system:index": "5"
+            })]),
+    valid_nonflooded = 
+    /* color: #8b7f0c */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.01457425769765, 34.62979207125804],
+                  [-79.01457425769765, 34.62974351655003],
+                  [-79.01435431655842, 34.62974351655003],
+                  [-79.01435431655842, 34.62979207125804]]], null, false),
+            {
+              "LC": 2,
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.01533600505788, 34.62957136781083],
+                  [-79.01533600505788, 34.62949191442609],
+                  [-79.01516970809895, 34.62949191442609],
+                  [-79.01516970809895, 34.62957136781083]]], null, false),
+            {
+              "LC": 2,
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.01645180400807, 34.62896222325003],
+                  [-79.01645180400807, 34.62888276928192],
+                  [-79.0162962358852, 34.62888276928192],
+                  [-79.0162962358852, 34.62896222325003]]], null, false),
+            {
+              "LC": 2,
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.01428457912404, 34.62956695373591],
+                  [-79.01428457912404, 34.62946984402796],
+                  [-79.01422020610768, 34.62946984402796],
+                  [-79.01422020610768, 34.62956695373591]]], null, false),
+            {
+              "LC": 2,
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.01388761218983, 34.6286885481507],
+                  [-79.01388761218983, 34.62865764929244],
+                  [-79.01382323917348, 34.62865764929244],
+                  [-79.01382323917348, 34.6286885481507]]], null, false),
+            {
+              "LC": 2,
+              "system:index": "4"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.01270744022328, 34.629041677142034],
+                  [-79.01270744022328, 34.62899312199485],
+                  [-79.0126216095348, 34.62899312199485],
+                  [-79.0126216095348, 34.629041677142034]]], null, false),
+            {
+              "LC": 2,
+              "system:index": "5"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[-79.01269134696919, 34.629730274352006],
+                  [-79.01269134696919, 34.62966847739995],
+                  [-79.01262697395283, 34.62966847739995],
+                  [-79.01262697395283, 34.629730274352006]]], null, false),
+            {
+              "LC": 2,
+              "system:index": "6"
+            })]),
+    valid_flooded = ee.FeatureCollection("projects/ee-almehedi06/assets/P3_Lumb_valid_flood");
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+//////////////////////////////////////
+//Data Preprocessing
+//////////////////////////////////////
+
+var duringStart = '2016-10-07'
+var duringEnd = '2016-10-15' 
+var dryStart = '2017-01-01'
+var dryEnd = '2017-03-25' 
+
+Map.addLayer(valid_flooded, {}, 'valid_flooded');
+
+//Collection
+var collection = ee.ImageCollection('COPERNICUS/S1_GRD')
+  .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+  .filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING'))
+  .filter(ee.Filter.eq('resolution_meters', 10))
+  .filterBounds(geometry)
+  .select('VV', 'VH'); 
+
+// Filter for during flood and dry periods
+var duringCollection = collection.filterDate(duringStart, duringEnd);
+var dryCollection = collection.filterDate(dryStart, dryEnd);
+
+// Mosaic for during flood and dry periods
+var during = duringCollection.mosaic().clip(geometry);
+var dry = dryCollection.mosaic().clip(geometry);
+
+// Preprocess the images (filtering and conversion)
+var duringFiltered = ee.Image(toDB(RefinedLee(toNatural(during))));
+var dryFiltered = ee.Image(toDB(RefinedLee(toNatural(dry))));
+
+//Division image
+var division = duringFiltered.divide(dryFiltered);
+
+// Define the input features (bands) from Sentinel-1 data and division image
+var inputFeatures = duringFiltered.addBands(dryFiltered).addBands(division);
+
+print(inputFeatures)
+
+//EDA/////////////////////
+// ///////////////////////
+// Display the 'sum_2' band from inputFeatures
+// Map.addLayer(inputFeatures.select(['sum_2']), {min: 0, max: 1, palette: ['green']}, 'Sum_2 Band');
+
+// // Display the histogram of the 'sum_2' band
+// var histogramPanel = ui.Chart.image.histogram(inputFeatures.select(['sum_1']), geometry, 30)
+//     .setSeriesNames(['sum_1'])
+//     .setOptions({
+//       title: 'Histogram of sum Band',
+//       hAxis: {title: 'Pixel Value'},
+//       vAxis: {title: 'Frequency'},
+//       colors: ['green'],
+//     });
+// 1
+// // Add the histogram panel to the map
+// Map.add(histogramPanel);
+
+// // Assuming inputFeatures is your image
+// var pixelCount = inputFeatures.reduceRegion({
+//   reducer: ee.Reducer.count(),
+//   geometry: geometry,  // Assuming you have defined a region of interest (geometry)
+//   scale: 10,          // Adjust the scale as needed based on your data
+//   maxPixels: 1e13     // Set a maximum number of pixels to consider
+// });
+
+// // Get the pixel count value
+// var count = ee.Number(pixelCount.get('sum'));
+// print('Number of Pixels:', count); 
+
+
+////////////////////////////////
+//Feature Engineering
+////////////////////////////////
+
+// Merge points together
+var newfc = flooded.merge(valid_nonflooded);
+print(newfc, 'newfc');
+
+Map.addLayer(newfc)
+
+// Select the bands for training
+var bands = ['sum', 'sum_1', 'sum_2'];
+
+// Sample the input imagery to get a FeatureCollection of training data.
+var training = inputFeatures.select(bands).sampleRegions({
+  collection: newfc,
+  properties: ['LC'],
+  scale: 10
+});
+
+
+////////////////////////////////
+/////MODEL 
+////////////////////////////////
+
+// // Make a Random Forest classifier and train it.
+// var classifier = ee.Classifier.smileRandomForest(100).train({
+//   features: training,
+//   classProperty: 'LC',
+//   inputProperties: bands
+// });
+
+// Train the Random Forest classifier with hyperparameters
+var classifier = ee.Classifier.smileRandomForest({
+  numberOfTrees: 200, // Number of decision trees to grow. Default is 10.
+  variablesPerSplit: null, // Number of variables per split. Default is null, which uses all variables.
+  minLeafPopulation: 1, // Minimum number of samples required to be at a leaf node of the tree. Default is 1.
+  bagFraction: 0.5, // Fraction of the input to bag (bootstrap) for each tree. Default is 0.5.
+  maxNodes: null, // Maximum number of leaf nodes in the trees. Default is null, which means no limit.
+  seed: 0 // Seed for the random number generator. Default is 0.
+}).train({
+  features: training,
+  classProperty: 'LC',
+  inputProperties: bands
+});
+
+// Classify the input imagery.
+var classified = inputFeatures.select(bands).classify(classifier);
+
+// Define a palette for the Land Use classification.
+var palette = [
+  'D3D3D3', // urban (0)  // grey
+  '0000FF', // water (1)  // blue
+];
+
+// Display the classification result and the input image.
+// Map.addLayer(classified, {min: 0, max: 1, palette: palette}, 'Land Use Classification');
+
+var flood = classified.updateMask(classified.eq(1)); // mask it
+Map.addLayer(flood, {}, 'Flooded');
+
+
+////////////////////////////////////////
+/////Refinement 
+////////////////////////////////////////
+// Mask out area with permanent/semi-permanent water
+var permanentWater = gsw.select('seasonality').gte(5).clip(geometry)
+var flood = flood.where(permanentWater, 0).selfMask()
+Map.addLayer(permanentWater.selfMask(), {min:0, max:1, palette: ['blue']}, 'Permanent Water')
+
+// Mask out areas with more than 5 percent slope using the HydroSHEDS DEM
+var slopeThreshold = 5;
+var terrain = ee.Algorithms.Terrain(hydrosheds);
+var slope = terrain.select('slope');
+var flood = flood.updateMask(slope.lt(slopeThreshold));
+Map.addLayer(slope.gte(slopeThreshold).selfMask(), {min:0, max:1, palette: ['cyan']}, 'Steep Areas', false)
+
+// // Remove isolated pixels
+// // connectedPixelCount is Zoom dependent, so visual result will vary
+// var connectedPixelThreshold = 8;
+// var connections = flooded_CD.connectedPixelCount(8)
+// var flooded_CD = flooded_CD.updateMask(connections.gt(connectedPixelThreshold))
+// Map.addLayer(connections.lte(connectedPixelThreshold).selfMask(), {min:0, max:1, palette: ['yellow']}, 'Disconnected Areas', false)
+
+// Calculate the number of connected pixels within a 1-pixel radius for each pixel
+var connectedPixelCount = flood.connectedPixelCount({
+  maxSize: 128,
+  eightConnected: true
+});
+
+// Mask out the isolated pixels (where the connected pixel count is 1)
+var flood = flood.updateMask(connectedPixelCount.gt(1));
+
+
+Map.addLayer(flood, {min:0, max:1, palette: ['red']}, 'Flooded Areas CD');
+
+print(flood)
+
+/////////////////////////////////////////////
+////////////////////////////////////////////
+
+
+// Convert the flood raster to vector
+var floodVector = flood.reduceToVectors({
+  geometry: geometry,
+  crs: flood.projection(),
+  scale: 10,
+  geometryType: 'polygon',
+  eightConnected: false,
+  labelProperty: 'zone'
+});
+
+// Add the vector layer to the map
+Map.addLayer(floodVector, {color: 'red'}, 'Flood Vector');
+
+
+
+///////////////////////////////////////
+// //////Model Performance
+///////////////////////////////////////
+
+// Assuming vectorsFilled and valid_flooded are ee.FeatureCollections representing 
+// predicted and actual flooded areas respectively.
+
+// True Positives (TP): Areas that were correctly identified as flooded
+// Intersection between vectorsFilled and valid_flooded
+var truePositives = floodVector.filterBounds(valid_flooded);
+
+// False Positives (FP): Areas that were incorrectly identified as flooded
+// Features in vectorsFilled that do not intersect with valid_flooded
+var falsePositives = floodVector.filter(ee.Filter.bounds(valid_flooded).not());
+
+// False Negatives (FN): Actual flood areas that were not identified by the model
+// Features in valid_flooded that do not intersect with vectorsFilled
+var falseNegatives = valid_flooded.filter(ee.Filter.bounds(floodVector).not());
+
+// Counting the number of features in each category
+var TPcount = truePositives.size();
+var FPcount = falsePositives.size();
+var FNcount = falseNegatives.size();
+
+// Print the counts to the console
+// print('True Positives:', TPcount);
+// print('False Positives:', FPcount);
+// print('False Negatives:', FNcount);
+
+// Calculate Precision
+// Precision = TP / (TP + FP)
+var precision = TPcount.divide(TPcount.add(FPcount));
+
+// Print Precision to the console
+print('Precision:', precision);
+
+
+// Calculate Recall
+// Recall = TP / (TP + FN)
+var recall = TPcount.divide(TPcount.add(FNcount));
+
+// Print Recall to the console
+print('Recall:', recall);
+
+// Calculate F1-score
+// F1-score = 2 * (Precision * Recall) / (Precision + Recall)
+var f1_score = precision.multiply(recall).multiply(2).divide(precision.add(recall));
+
+// Print F1-score to the console
+print('F1-score:', f1_score);
+
+// Calculate total number of pixels
+var totalPixels = valid_flooded.merge(valid_nonflooded).size();
+
+// Observed Accuracy
+var observedAccuracy = TPcount.add(TPcount).divide(totalPixels);
+
+// Expected Accuracy
+var randomTP = TPcount.multiply(TPcount).divide(totalPixels);
+var randomFP = FPcount.multiply(FPcount).divide(totalPixels);
+var randomAccuracy = randomTP.add(randomFP).divide(totalPixels);
+
+// Calculate Kappa coefficient
+var kappa = observedAccuracy.subtract(randomAccuracy).divide(ee.Number(1).subtract(randomAccuracy));
+
+// Print Kappa to the console
+print('Kappa coefficient:', kappa);
+
+
+// Define an error margin (in meters)
+var errorMargin = 1;
+
+// Calculate the area of true positives in square meters and convert to square kilometers
+var TParea = truePositives.geometry().area(errorMargin).divide(1e6);
+print('Area of True Positives (sq km):', TParea);
+
+// Calculate the area of false positives in square meters and convert to square kilometers
+var FParea = falsePositives.geometry().area(errorMargin).divide(1e6);
+print('Area of False Positives (sq km):', FParea);
+
+// Calculate the area of false negatives in square meters and convert to square kilometers
+var FNarea = falseNegatives.geometry().area(errorMargin).divide(1e6);
+print('Area of False Negatives (sq km):', FNarea);
+
+// Calculate the total area in square meters and convert to square kilometers
+var totalArea = geometry.area(errorMargin).divide(1e6);
+var TNarea = totalArea.subtract(TParea).subtract(FParea).subtract(FNarea);
+print('Area of True Negatives (sq km):', TNarea);
+///////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+
+
+
+//############################
+// Speckle Filtering Functions
+//############################
+
+// Function to convert from dB
+function toNatural(img) {
+  return ee.Image(10.0).pow(img.select(0).divide(10.0));
+}
+
+//Function to convert to dB
+function toDB(img) {
+  return ee.Image(img).log10().multiply(10.0);
+}
+
+//Apllying a Refined Lee Speckle filter as coded in the SNAP 3.0 S1TBX:
+
+//https://github.com/senbox-org/s1tbx/blob/master/s1tbx-op-sar-processing/src/main/java/org/esa/s1tbx/sar/gpf/filtering/SpeckleFilters/RefinedLee.java
+//Adapted by Guido Lemoine
+
+// by Guido Lemoine
+function RefinedLee(img) {
+  // img must be in natural units, i.e. not in dB!
+  // Set up 3x3 kernels 
+  var weights3 = ee.List.repeat(ee.List.repeat(1,3),3);
+  var kernel3 = ee.Kernel.fixed(3,3, weights3, 1, 1, false);
+
+  var mean3 = img.reduceNeighborhood(ee.Reducer.mean(), kernel3);
+  var variance3 = img.reduceNeighborhood(ee.Reducer.variance(), kernel3);
+
+  // Use a sample of the 3x3 windows inside a 7x7 windows to determine gradients and directions
+  var sample_weights = ee.List([[0,0,0,0,0,0,0], [0,1,0,1,0,1,0],[0,0,0,0,0,0,0], [0,1,0,1,0,1,0], [0,0,0,0,0,0,0], [0,1,0,1,0,1,0],[0,0,0,0,0,0,0]]);
+
+  var sample_kernel = ee.Kernel.fixed(7,7, sample_weights, 3,3, false);
+
+  // Calculate mean and variance for the sampled windows and store as 9 bands
+  var sample_mean = mean3.neighborhoodToBands(sample_kernel); 
+  var sample_var = variance3.neighborhoodToBands(sample_kernel);
+
+  // Determine the 4 gradients for the sampled windows
+  var gradients = sample_mean.select(1).subtract(sample_mean.select(7)).abs();
+  gradients = gradients.addBands(sample_mean.select(6).subtract(sample_mean.select(2)).abs());
+  gradients = gradients.addBands(sample_mean.select(3).subtract(sample_mean.select(5)).abs());
+  gradients = gradients.addBands(sample_mean.select(0).subtract(sample_mean.select(8)).abs());
+
+  // And find the maximum gradient amongst gradient bands
+  var max_gradient = gradients.reduce(ee.Reducer.max());
+
+  // Create a mask for band pixels that are the maximum gradient
+  var gradmask = gradients.eq(max_gradient);
+
+  // duplicate gradmask bands: each gradient represents 2 directions
+  gradmask = gradmask.addBands(gradmask);
+
+  // Determine the 8 directions
+  var directions = sample_mean.select(1).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(7))).multiply(1);
+  directions = directions.addBands(sample_mean.select(6).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(2))).multiply(2));
+  directions = directions.addBands(sample_mean.select(3).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(5))).multiply(3));
+  directions = directions.addBands(sample_mean.select(0).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(8))).multiply(4));
+  // The next 4 are the not() of the previous 4
+  directions = directions.addBands(directions.select(0).not().multiply(5));
+  directions = directions.addBands(directions.select(1).not().multiply(6));
+  directions = directions.addBands(directions.select(2).not().multiply(7));
+  directions = directions.addBands(directions.select(3).not().multiply(8));
+
+  // Mask all values that are not 1-8
+  directions = directions.updateMask(gradmask);
+
+  // "collapse" the stack into a singe band image (due to masking, each pixel has just one value (1-8) in it's directional band, and is otherwise masked)
+  directions = directions.reduce(ee.Reducer.sum());  
+
+  //var pal = ['ffffff','ff0000','ffff00', '00ff00', '00ffff', '0000ff', 'ff00ff', '000000'];
+  //Map.addLayer(directions.reduce(ee.Reducer.sum()), {min:1, max:8, palette: pal}, 'Directions', false);
+
+  var sample_stats = sample_var.divide(sample_mean.multiply(sample_mean));
+
+  // Calculate localNoiseVariance
+  var sigmaV = sample_stats.toArray().arraySort().arraySlice(0,0,5).arrayReduce(ee.Reducer.mean(), [0]);
+
+  // Set up the 7*7 kernels for directional statistics
+  var rect_weights = ee.List.repeat(ee.List.repeat(0,7),3).cat(ee.List.repeat(ee.List.repeat(1,7),4));
+
+  var diag_weights = ee.List([[1,0,0,0,0,0,0], [1,1,0,0,0,0,0], [1,1,1,0,0,0,0], 
+    [1,1,1,1,0,0,0], [1,1,1,1,1,0,0], [1,1,1,1,1,1,0], [1,1,1,1,1,1,1]]);
+
+  var rect_kernel = ee.Kernel.fixed(7,7, rect_weights, 3, 3, false);
+  var diag_kernel = ee.Kernel.fixed(7,7, diag_weights, 3, 3, false);
+
+  // Create stacks for mean and variance using the original kernels. Mask with relevant direction.
+  var dir_mean = img.reduceNeighborhood(ee.Reducer.mean(), rect_kernel).updateMask(directions.eq(1));
+  var dir_var = img.reduceNeighborhood(ee.Reducer.variance(), rect_kernel).updateMask(directions.eq(1));
+
+  dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), diag_kernel).updateMask(directions.eq(2)));
+  dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), diag_kernel).updateMask(directions.eq(2)));
+
+  // and add the bands for rotated kernels
+  for (var i=1; i<4; i++) {
+    dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), rect_kernel.rotate(i)).updateMask(directions.eq(2*i+1)));
+    dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), rect_kernel.rotate(i)).updateMask(directions.eq(2*i+1)));
+    dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), diag_kernel.rotate(i)).updateMask(directions.eq(2*i+2)));
+    dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), diag_kernel.rotate(i)).updateMask(directions.eq(2*i+2)));
+  }
+
+  // "collapse" the stack into a single band image (due to masking, each pixel has just one value in it's directional band, and is otherwise masked)
+  dir_mean = dir_mean.reduce(ee.Reducer.sum());
+  dir_var = dir_var.reduce(ee.Reducer.sum());
+
+  // A finally generate the filtered value
+  var varX = dir_var.subtract(dir_mean.multiply(dir_mean).multiply(sigmaV)).divide(sigmaV.add(1.0));
+
+  var b = varX.divide(dir_var);
+
+  var result = dir_mean.add(b.multiply(img.subtract(dir_mean)));
+  return(result.arrayFlatten([['sum']]));
+}
+
+///////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////

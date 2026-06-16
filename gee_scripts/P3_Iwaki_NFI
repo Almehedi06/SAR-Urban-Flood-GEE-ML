@@ -1,0 +1,223 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var gsw = ee.Image("JRC/GSW1_2/GlobalSurfaceWater"),
+    hydrosheds = ee.Image("WWF/HydroSHEDS/03VFDEM"),
+    geometry = 
+    /* color: #98ff00 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[140.84844881098016, 37.10337956670847],
+          [140.84844881098016, 37.014611085740555],
+          [140.99195772211297, 37.014611085740555],
+          [140.99195772211297, 37.10337956670847]]], null, false),
+    valid = ee.FeatureCollection("projects/ee-almehedi06/assets/P3_Iwaki_valid_flooded");
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+//Dates
+var floodStart = '2019-10-07'
+var floodEnd = '2019-10-15'
+var normalStart = '2017-01-01'
+var normalEnd = '2017-08-30' 
+
+//Sentinel-1 collection 
+var collection = ee.ImageCollection('COPERNICUS/S1_GRD')
+  .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+  .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+  .filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING')) 
+  .filter(ee.Filter.eq('resolution_meters', 10))
+  .filterBounds(geometry)
+  .select(['VV', 'VH']); 
+
+var normalCollection = collection.filterDate(normalStart, normalEnd)
+var floodCollection = collection.filterDate(floodStart, floodEnd)
+
+// var before = beforeCollection.mosaic().clip(geometry);
+// var after = afterCollection.mosaic().clip(geometry);
+
+var medianNormal = normalCollection.median().clip(geometry);
+var medianFlood = floodCollection.median().clip(geometry);
+
+// Map.addLayer(before, {min:-25,max:0}, 'Before Floods', false);
+// Map.addLayer(after, {min:-25,max:0}, 'After Floods', false);
+
+Map.addLayer(medianNormal, {min:-25,max:0}, 'Normal', false)
+Map.addLayer(medianFlood, {min:-25,max:0}, 'Flood', false)
+
+//Difference image 
+var diff = medianNormal.subtract(medianFlood);
+Map.addLayer(diff, {min:-25,max:0}, 'diff', false)
+
+// Standard deviation
+var stdDev = normalCollection.reduce(ee.Reducer.stdDev()).clip(geometry);
+Map.addLayer(stdDev, {min:-25,max:0}, 'std', false)
+
+//Normalized Flood Index(NFI)
+var P_c = diff.divide(stdDev);
+Map.addLayer(P_c, {min:-25,max:0}, 'P_c', false)
+
+print(P_c);
+
+var P_c_VV = P_c.select('VV');
+
+print(P_c_VV);
+// Map.addLayer(P_c_VV, {min: 0, max: 256}, 'P_bar_VV');
+
+// Generate histogram for floodedPixels
+var histogram = ui.Chart.image.histogram({
+  image: P_c_VV,
+  region: geometry,
+  scale: 10,
+  maxBuckets: 30
+});
+
+// Display the histogram
+print(histogram);
+
+
+// Define thresholds
+var lowerThreshold = -1.2;
+var upperThreshold = 1.8;  
+
+// Create a mask where pixels with values less than -5 or greater than 8 are marked as 1 (true)
+var mask = P_c_VV.lt(lowerThreshold).or(P_c_VV.gt(upperThreshold));
+
+// Apply the mask to the P_c_VV image
+var maskedP_c_VV = P_c_VV.updateMask(mask);
+
+// Display the masked image
+Map.addLayer(maskedP_c_VV, {min: -25, max: 0, palette: ['blue', 'white', 'green']}, 'Masked P_c_VV');
+
+
+// Calculate min and max of P_c_VV
+var minMax = P_c_VV.reduceRegion({
+  reducer: ee.Reducer.minMax(),
+  geometry: geometry,
+  scale: 10, // Set the appropriate scale
+  maxPixels: 1e9
+});
+
+// Print the results
+print('Min value of P_c_VV:', minMax.get('VV_min'));
+print('Max value of P_c_VV:', minMax.get('VV_max'));
+
+
+// Convert the floating-point data to integer
+var scaleFactor = 10; // Change this factor as needed
+var integralImage = maskedP_c_VV.multiply(scaleFactor).toInt();
+
+var permanentWater = gsw.select('seasonality').gte(5).clip(geometry)
+Map.addLayer(permanentWater, {color: 'blue'}, 'PW');
+var integralImage = integralImage.where(permanentWater, 0).selfMask()
+
+var slopeThreshold = 5;
+var terrain = ee.Algorithms.Terrain(hydrosheds);
+var slope = terrain.select('slope');
+var integralImage = integralImage.updateMask(slope.lt(slopeThreshold));
+Map.addLayer(slope.gte(slopeThreshold).selfMask(), {min:0, max:1, palette: ['cyan']}, 'Steep Areas', false)
+
+// // Remove isolated pixels
+// // connectedPixelCount is Zoom dependent, so visual result will vary
+// var connectedPixelThreshold = 4;
+// var connections = integralImage.connectedPixelCount(4)
+// var integralImage = integralImage.updateMask(connections.gt(connectedPixelThreshold))
+// Map.addLayer(connections.lte(connectedPixelThreshold).selfMask(), {min:0, max:1, palette: ['yellow']}, 'Disconnected Areas', false)
+
+// Map.addLayer(integralImage, {color: 'blue'}, 'II');
+
+//Region growing
+// SRTM elevation data
+var elevation = ee.Image('USGS/SRTMGL1_003'); 
+// Step 1: Mask the elevation image with the initial flood mask
+var maskedElevation = elevation.updateMask(integralImage);
+// Step 2: Use a focal operation to get the minimum elevation in the neighborhood of each pixel
+var squareKernel = ee.Kernel.square({radius: 1});
+var minElevation = maskedElevation.focal_min({kernel: squareKernel, iterations: 1});
+// Step 3: Identify new flood pixels - these are pixels where the elevation is less than or equal to the minimum elevation of their neighbors
+var newFloodPixels = elevation.lte(minElevation).and(integralImage.not());
+// Step 4: Combine the new flood pixels with the initial flood mask
+var integralImage = integralImage.or(newFloodPixels);
+
+
+// // Calculate the number of connected pixels within a 1-pixel radius for each pixel
+// var connectedPixelCount = integralImage.connectedPixelCount({
+//   maxSize: 128,
+//   eightConnected: true
+// });
+
+// // Mask out the isolated pixels (where the connected pixel count is 1)
+// var integralImage = integralImage.updateMask(connectedPixelCount.gt(1));
+
+// Map.addLayer(integralImage, {min:0, max:1, palette: ['red']}, 'Flooded Areas');
+
+
+var flood = integralImage;
+
+// Now reduce this integral image to vector
+var FloodPolygons = flood.reduceToVectors({
+  geometryType: 'polygon',
+  reducer: ee.Reducer.countEvery(),
+  scale: 20, // Adjust the scale as needed
+  maxPixels: 1e8
+});
+
+// Map.addLayer(valid_image, {color: 'black'}, 'Valid image');
+
+// Add the vector layer to the map
+Map.addLayer(FloodPolygons, {color: 'red'}, 'Flood Polygons');
+
+
+// Map.addLayer(valid, {color: 'black'}, 'Valid');
+
+
+
+// ////////////////////////////////
+// // Accuracy assessment
+
+// True Positives (TP): Areas that were correctly identified as flooded
+// Intersection between FloodPolygons and valid
+var truePositives = FloodPolygons.filterBounds(valid);
+
+// False Positives (FP): Areas that were incorrectly identified as flooded
+// Features in FloodPolygons that do not intersect with valid
+var falsePositives = FloodPolygons.filter(ee.Filter.bounds(valid).not());
+
+// False Negatives (FN): Actual flood areas that were not identified by the model
+// Features in valid that do not intersect with FloodPolygons
+var falseNegatives = valid.filter(ee.Filter.bounds(FloodPolygons).not());
+
+// Counting the number of features in each category
+var TPcount = truePositives.size();
+var FPcount = falsePositives.size();
+var FNcount = falseNegatives.size();
+
+// Print the counts to the console
+// print('True Positives:', TPcount);
+// print('False Positives:', FPcount);
+// print('False Negatives:', FNcount);
+
+// Calculate Precision
+// Precision = TP / (TP + FP)
+var precision = TPcount.divide(TPcount.add(FPcount));
+
+// Print Precision to the console
+print('Precision:', precision);
+
+
+// Calculate Recall
+// Recall = TP / (TP + FN)
+var recall = TPcount.divide(TPcount.add(FNcount));
+
+// Print Recall to the console
+print('Recall:', recall);
+
+// Calculate F1-score
+// F1-score = 2 * (Precision * Recall) / (Precision + Recall)
+var f1_score = precision.multiply(recall).multiply(2).divide(precision.add(recall));
+
+// Print F1-score to the console
+print('F1-score:', f1_score); 
+

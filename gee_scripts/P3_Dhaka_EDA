@@ -1,0 +1,281 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var gsw = ee.Image("JRC/GSW1_2/GlobalSurfaceWater"),
+    hydrosheds = ee.Image("WWF/HydroSHEDS/03VFDEM"),
+    geometry = 
+    /* color: #d63000 */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[90.2458798153371, 24.007783376349952],
+          [90.2458798153371, 23.65542003780786],
+          [90.6194149715871, 23.65542003780786],
+          [90.6194149715871, 24.007783376349952]]], null, false),
+    val = ee.FeatureCollection("projects/ee-almehedi06/assets/Flooded2");
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+//Dates
+var duringStart = '2020-07-20'
+var duringEnd = '2020-08-03'
+var dryStart = '2021-01-01'
+var dryEnd = '2021-03-15'    
+
+Map.addLayer(val, {color: 'grey'}, 'Val flooded locations')
+
+var collection= ee.ImageCollection('COPERNICUS/S1_GRD')
+  .filter(ee.Filter.eq('instrumentMode','IW'))
+  .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+  .filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING')) 
+  .filter(ee.Filter.eq('resolution_meters',10))
+  .filterBounds(geometry)
+  .select('VV');  
+
+var duringCollection = collection.filterDate(duringStart, duringEnd)
+var dryCollection = collection.filterDate(dryStart,dryEnd)
+
+var during = duringCollection.mosaic().clip(geometry);
+var dry = dryCollection.mosaic().clip(geometry);
+
+Map.addLayer(during, {min:-25,max:0}, 'during drys', false);
+Map.addLayer(dry, {min:-25,max:0}, 'dry drys', false); 
+
+var division = during.divide(dry);
+
+// Compute histograms for the original images
+var dryHistogram = ui.Chart.image.histogram(dry, geometry, 30);
+var duringHistogram = ui.Chart.image.histogram(during, geometry, 30);
+
+
+var duringCollectionCount = duringCollection.size();
+print('Number of images in during period:', duringCollectionCount);
+
+
+// Function to extract date from an image and convert it to a readable format
+function extractDate(image) {
+    var date = ee.Date(image.get('system:time_start')).format('YYYY-MM-dd');
+    return ee.Feature(null, {'date': date});
+}
+
+// Apply the function to each image in the collection
+var dates = duringCollection.map(extractDate);
+
+// Print the dates
+print('Acquisition dates:', dates.aggregate_array('date'));
+
+
+// Set chart properties
+dryHistogram.setOptions({
+  title: 'Dry Image Histogram',
+  hAxis: {title: 'Pixel Value'},
+  vAxis: {title: 'Frequency'},
+});
+
+// // Display the histograms
+print(dryHistogram);
+
+
+// Set chart properties
+duringHistogram.setOptions({
+  title: 'During Image Histogram',
+  hAxis: {title: 'Pixel Value'},
+  vAxis: {title: 'Frequency'},
+});
+
+// // Display the histograms
+print(duringHistogram);
+
+// //Translation
+// // Add +8.5 to the pixel values of the dry image
+// var dryTranslated = dry.add(8.5);
+
+// // Compute histogram for the translated dry image
+// var dryTranslatedHistogram = ui.Chart.image.histogram(dryTranslated, geometry, 30)
+//   .setOptions({
+//     title: 'Translated Dry Image Histogram',
+//     hAxis: {title: 'Pixel Value'},
+//     vAxis: {title: 'Frequency'},
+//   });
+
+// print(dryTranslatedHistogram);
+
+// // Add the translated dry image to the map
+// Map.addLayer(dryTranslated, {min: -25, max: 0}, 'Translated Dry Image');
+
+
+// //Bivariate mathematical operations////////
+// // Calculate the difference image
+// var differenceImage = during.subtract(dry);
+
+// // Add the difference image to the map
+// Map.addLayer(differenceImage, {min: -5, max: 5, palette: ['red', 'white', 'blue']}, 'Difference Image');
+
+// // /////////////////////////////////////////////////
+
+
+//Sandard devitioan image
+// Calculate the standard deviation image for the dry collection
+var dryStdDev = dryCollection.reduce(ee.Reducer.stdDev());
+
+// Clip the standard deviation image to the specified geometry
+dryStdDev = dryStdDev.clip(geometry);
+
+// Add the standard deviation image to the map
+Map.addLayer(dryStdDev, {min: 0, max: 5}, 'Dry Standard Deviation Image');
+
+//Bivariate mathematical operations////////
+// Calculate the difference image
+var differenceImage = dry.subtract(during);
+
+// Add the difference image to the map
+Map.addLayer(differenceImage, {min: -5, max: 5, palette: ['red', 'white', 'blue']}, 'Difference Image');
+
+// Calculate the image by dividing differenceImage by dryStdDev
+var normalizedDifference = differenceImage.divide(dryStdDev);
+
+// Add the normalized difference image to the map
+Map.addLayer(normalizedDifference, {min: -2, max: 2, palette: ['red', 'white', 'blue']}, 'Normalized Difference Image');
+
+var normalizedDifferenceHistogram = ui.Chart.image.histogram(normalizedDifference, geometry, 30)
+  .setOptions({
+    title: 'Translated Dry Image Histogram',
+    hAxis: {title: 'Pixel Value'},
+    vAxis: {title: 'Frequency'},
+  });
+
+print(normalizedDifferenceHistogram);
+
+// Clip pixels below -4 in the standardized difference image
+var clippedDifference = normalizedDifference.updateMask(normalizedDifference.gte(2));
+
+// Add the clipped difference image to the map
+Map.addLayer(clippedDifference, {min: -2, max: 2, palette: ['red', 'white', 'blue']}, 'Clipped Difference Image');
+
+// // Convert the clipped difference image to a vector
+// var differenceVector = clippedDifference.reduceToVectors({
+//   scale: 10, // Set an appropriate scale based on your data
+//   geometry: geometry,
+//   eightConnected: false,
+//   labelProperty: 'difference', // Optional, set a property name for the difference values
+// });
+
+// // Add the difference vectors to the map
+// Map.addLayer(differenceVector, {color: 'red'}, 'Difference Vectors');
+
+
+
+// var duringImageCount = duringCollection.size();
+
+// print('Number of images in the during collection:', duringImageCount);
+
+
+// // Server-side function to print information for each image
+// var printImageInfo = function(index) {
+//   var image = ee.Image(duringCollection.toList(duringImageCount).get(index));
+//   var imageId = image.get('system:index');
+//   var timeStart = ee.Date(image.get('system:time_start')).format('YYYY-MM-dd');
+  
+//   print('Image ID:', imageId);
+//   print('Date:', timeStart);
+//   // Add more information as needed
+// };
+
+// // Iterate over each image in the collection and print information
+// for (var i = 0; i < duringImageCount.getInfo(); i++) {
+//   printImageInfo(i);
+// }
+
+
+// // Assuming 'geometry' is a feature
+// var area = geometry.geometry().area();
+// // Convert area to square kilometers
+// var areaKilometersSquared = area.divide(1e6);
+
+// // Print the total area in square meters and square kilometers
+// print('Total Area of the Feature (square meters):', area);
+// print('Total Area of the Feature (square kilometers):', areaKilometersSquared);
+
+
+
+// Band math 
+// Assuming 'during' is the image you want to visualize
+// var duringLog = during.log();
+
+// // Display the original and log-scaled images side by side
+// Map.centerObject(geometry, 10); // Center the map on the area of interest
+// Map.addLayer(during, {min: -25, max: 0}, 'Original Image');
+// Map.addLayer(duringLog, {min: 0, max: 2.5}, 'Log-scaled Image');
+
+// // Compute histograms for the original and log-scaled images
+// var originalHistogram = ui.Chart.image.histogram(during, geometry, 30);
+// var logHistogram = ui.Chart.image.histogram(duringLog, geometry, 30);
+
+// // Set chart properties
+// originalHistogram.setOptions({
+//   title: 'Original Image Histogram',
+//   hAxis: {title: 'Pixel Value'},
+//   vAxis: {title: 'Frequency'},
+// });
+
+// logHistogram.setOptions({
+//   title: 'Log-scaled Image Histogram',
+//   hAxis: {title: 'Log(Pixel Value)'},
+//   vAxis: {title: 'Frequency'},
+// });
+
+// // Display the histograms
+// print(originalHistogram);
+// print(logHistogram);
+
+
+
+// // Assuming 'during' is the image you want to multiply by -1
+// var duringNegated = during.multiply(-1);
+
+// // Display the original and negated images side by side
+// Map.centerObject(geometry, 10); // Center the map on the area of interest
+// Map.addLayer(during, {min: -25, max: 0}, 'Original Image');
+// Map.addLayer(duringNegated, {min: 0, max: 25}, 'Negated Image');
+
+
+
+// // Assuming 'during' is the image you want to standardize
+// var duringImage = during.select('VV');  // Assuming you are working with the 'VV' band
+
+// // Define the scale for aggregation (e.g., 1000 meters)
+// var scale = 1000;
+
+// // Calculate mean and standard deviation from a coarser image
+// var meanStdImage = duringImage.reduceRegion({
+//   reducer: ee.Reducer.mean().combine(ee.Reducer.stdDev(), '', true),
+//   geometry: geometry,
+//   scale: scale
+// });
+
+// // Extract mean and standard deviation values
+// var mean = meanStdImage.getNumber('VV_mean');
+// var stdDev = meanStdImage.getNumber('VV_stdDev');
+
+// // Standardize pixel values
+// var standardizedImage = duringImage.subtract(mean).divide(stdDev);
+
+// // Generate histogram for the standardized image
+// var histogram = ui.Chart.image.histogram(standardizedImage, geometry, 100)
+//     .setSeriesNames(['Standardized During Image'])
+//     .setOptions({
+//         title: 'Standardized During Image Histogram',
+//         hAxis: {title: 'Pixel Value'},
+//         vAxis: {title: 'Frequency'},
+//     });
+
+// // Print the histogram to the console
+// print(histogram);
+
+// // Visualize the original and standardized images
+// Map.centerObject(geometry, 10);
+// Map.addLayer(duringImage, {min: -25, max: 0, palette: ['black', 'white']}, 'Original During Image');
+// Map.addLayer(standardizedImage, {min: -3, max: 3, palette: ['blue', 'white', 'red']}, 'Standardized During Image');
+
+
+

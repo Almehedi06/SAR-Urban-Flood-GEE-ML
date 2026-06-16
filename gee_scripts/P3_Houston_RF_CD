@@ -1,0 +1,652 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var gsw = ee.Image("JRC/GSW1_2/GlobalSurfaceWater"),
+    hydrosheds = ee.Image("WWF/HydroSHEDS/03VFDEM"),
+    image = ee.Image("projects/ee-almehedi06/assets/2017USA4510"),
+    geometry = ee.FeatureCollection("projects/ee-almehedi06/assets/COH_ADMINISTRATIVE_BOUNDARY_-_MIL"),
+    HWM_flooded = ee.FeatureCollection("projects/ee-almehedi06/assets/hwm_flooded"),
+    flooded = 
+    /* color: #d63000 */
+    /* shown: false */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Point([-95.6872846172935, 29.775940759610993]),
+            {
+              "LC": 1,
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.6462575482017, 29.830831323846272]),
+            {
+              "LC": 1,
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.63046470152202, 29.83574542718083]),
+            {
+              "LC": 1,
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.69346442686381, 29.799554095430782]),
+            {
+              "LC": 1,
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68405773611894, 29.620048773639343]),
+            {
+              "LC": 1,
+              "system:index": "4"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.68113949271074, 29.626763855699323]),
+            {
+              "LC": 1,
+              "system:index": "5"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.79433868596729, 29.578551040894418]),
+            {
+              "LC": 1,
+              "system:index": "6"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.8169979877251, 29.570339733422205]),
+            {
+              "LC": 1,
+              "system:index": "7"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.63811369193012, 29.558980669915403]),
+            {
+              "LC": 1,
+              "system:index": "8"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.5881377735291, 29.51818871957315]),
+            {
+              "LC": 1,
+              "system:index": "9"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.60976710702519, 29.486664713206704]),
+            {
+              "LC": 1,
+              "system:index": "10"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.54917064096074, 29.49622753400886]),
+            {
+              "LC": 1,
+              "system:index": "11"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.51130871372169, 29.4519258275627]),
+            {
+              "LC": 1,
+              "system:index": "12"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.51773859832754, 29.352488523063844]),
+            {
+              "LC": 1,
+              "system:index": "13"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.49782587860098, 29.38046429155858]),
+            {
+              "LC": 1,
+              "system:index": "14"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.41027857635488, 29.38928927554905]),
+            {
+              "LC": 1,
+              "system:index": "15"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.41079356048574, 29.4042451271716]),
+            {
+              "LC": 1,
+              "system:index": "16"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.4113085446166, 29.423983482870614]),
+            {
+              "LC": 1,
+              "system:index": "17"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.36495997283926, 29.381511363576408]),
+            {
+              "LC": 1,
+              "system:index": "18"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.37611796234121, 29.439980699757577]),
+            {
+              "LC": 1,
+              "system:index": "19"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.314663189392, 29.45552698111427]),
+            {
+              "LC": 1,
+              "system:index": "20"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.35661566557184, 29.29657458185263]),
+            {
+              "LC": 1,
+              "system:index": "21"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.38974631132379, 29.252252102270237]),
+            {
+              "LC": 1,
+              "system:index": "22"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.36228049101129, 29.244913081173785]),
+            {
+              "LC": 1,
+              "system:index": "23"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.53943503202692, 29.308999393437535]),
+            {
+              "LC": 1,
+              "system:index": "24"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61449103918274, 29.321090710406803]),
+            {
+              "LC": 1,
+              "system:index": "25"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.61449103918274, 29.320043017278046]),
+            {
+              "LC": 1,
+              "system:index": "26"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.34348293643549, 29.193964042496958]),
+            {
+              "LC": 1,
+              "system:index": "27"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.29885097842768, 29.196361707703545]),
+            {
+              "LC": 1,
+              "system:index": "28"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.30846401553706, 29.150346727208067]),
+            {
+              "LC": 1,
+              "system:index": "29"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.27476364044134, 29.79777877252294]),
+            {
+              "LC": 1,
+              "system:index": "30"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.22893005279485, 29.777517465413833]),
+            {
+              "LC": 1,
+              "system:index": "31"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.29884719627151, 29.72741458804862]),
+            {
+              "LC": 1,
+              "system:index": "32"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.27749785187923, 29.67988299706939]),
+            {
+              "LC": 1,
+              "system:index": "33"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.27638205292904, 29.67988299706939]),
+            {
+              "LC": 1,
+              "system:index": "34"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.26697198371451, 29.729268561105354]),
+            {
+              "LC": 1,
+              "system:index": "35"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.30902902106803, 29.718609703418117]),
+            {
+              "LC": 1,
+              "system:index": "36"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.64205164603675, 29.76864738925035]),
+            {
+              "LC": 1,
+              "system:index": "37"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.64359659842933, 29.768796397612647]),
+            {
+              "LC": 1,
+              "system:index": "38"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.08816603212203, 29.752759408089645]),
+            {
+              "LC": 1,
+              "system:index": "39"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.08765104799117, 29.75156714418782]),
+            {
+              "LC": 1,
+              "system:index": "40"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.19319094824952, 29.771331402903076]),
+            {
+              "LC": 1,
+              "system:index": "41"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.18872775244874, 29.768351268962384]),
+            {
+              "LC": 1,
+              "system:index": "42"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.23398780033173, 29.806141571616603]),
+            {
+              "LC": 1,
+              "system:index": "43"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.23122261569581, 29.82354925742144]),
+            {
+              "LC": 1,
+              "system:index": "44"
+            })]),
+    nonflooded = 
+    /* color: #98ff00 */
+    /* shown: false */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Point([-95.41039740937707, 29.73618294295266]),
+            {
+              "LC": 2,
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.42241370576379, 29.734394246108117]),
+            {
+              "LC": 2,
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.41074073213098, 29.7284316929397]),
+            {
+              "LC": 2,
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.39666449922082, 29.734692364463893]),
+            {
+              "LC": 2,
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.42104041474816, 29.726642857887718]),
+            {
+              "LC": 2,
+              "system:index": "4"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.19790593335509, 30.06148344952733]),
+            {
+              "LC": 2,
+              "system:index": "5"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.19996586987853, 30.06564334798371]),
+            {
+              "LC": 2,
+              "system:index": "6"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.20202580640196, 30.057323376257013]),
+            {
+              "LC": 2,
+              "system:index": "7"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.47393742749571, 29.97586962942113]),
+            {
+              "LC": 2,
+              "system:index": "8"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.5446619148004, 30.027008995838457]),
+            {
+              "LC": 2,
+              "system:index": "9"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.54672185132384, 30.034737071666665]),
+            {
+              "LC": 2,
+              "system:index": "10"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.5391687507379, 30.025225508156954]),
+            {
+              "LC": 2,
+              "system:index": "11"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.51856938550353, 30.163053765468486]),
+            {
+              "LC": 2,
+              "system:index": "12"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.52749577710509, 30.157710563600965]),
+            {
+              "LC": 2,
+              "system:index": "13"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.35216367941995, 29.67893441332763]),
+            {
+              "LC": 2,
+              "system:index": "14"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.3658965895762, 29.732462036200484]),
+            {
+              "LC": 2,
+              "system:index": "15"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.5378908503831, 29.727687397614904]),
+            {
+              "LC": 2,
+              "system:index": "16"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.36811762587675, 29.808711452199987]),
+            {
+              "LC": 2,
+              "system:index": "17"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.4316323353494, 29.83581646629308]),
+            {
+              "LC": 2,
+              "system:index": "18"
+            }),
+        ee.Feature(
+            ee.Geometry.Point([-95.43815546767362, 29.8599367228139]),
+            {
+              "LC": 2,
+              "system:index": "19"
+            })]);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+// Dates
+var duringStart = '2017-08-25';
+var duringEnd = '2017-09-05';
+var dryStart = '2017-11-01';
+var dryEnd = '2017-12-31';  
+
+var collection = ee.ImageCollection('COPERNICUS/S1_GRD') 
+  .filter(ee.Filter.eq('instrumentMode', 'IW'))
+  .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+  .filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING'))
+  .filter(ee.Filter.eq('resolution_meters', 10))
+  .filterBounds(geometry) 
+  .select('VV', 'VH'); 
+
+// Filter for during flood and dry periods
+var duringCollection = collection.filterDate(duringStart, duringEnd);
+var dryCollection = collection.filterDate(dryStart, dryEnd); 
+
+// Mosaic for during flood and dry periods
+var during = duringCollection.mosaic().clip(geometry); 
+var dry = dryCollection.mosaic().clip(geometry);
+
+// Preprocess the images (filtering and conversion)
+var duringFiltered = ee.Image(toDB(RefinedLee(toNatural(during))));
+var dryFiltered = ee.Image(toDB(RefinedLee(toNatural(dry))));
+
+// Generate division image
+var division = duringFiltered.divide(dryFiltered);
+
+// Define the input features (bands) from Sentinel-1 data and division image
+var inputFeatures = duringFiltered.addBands(dryFiltered).addBands(division);
+
+print(inputFeatures)
+
+//EDA/////////////////////
+// ///////////////////////
+// Display the 'sum_2' band from inputFeatures
+// Map.addLayer(inputFeatures.select(['sum_2']), {min: 0, max: 1, palette: ['green']}, 'Sum_2 Band');
+
+// // Display the histogram of the 'sum_2' band
+// var histogramPanel = ui.Chart.image.histogram(inputFeatures.select(['sum_1']), geometry, 30)
+//     .setSeriesNames(['sum_1'])
+//     .setOptions({
+//       title: 'Histogram of sum Band',
+//       hAxis: {title: 'Pixel Value'},
+//       vAxis: {title: 'Frequency'},
+//       colors: ['green'],
+//     });
+// 1
+// // Add the histogram panel to the map
+// Map.add(histogramPanel);
+
+// // Assuming inputFeatures is your image
+// var pixelCount = inputFeatures.reduceRegion({
+//   reducer: ee.Reducer.count(),
+//   geometry: geometry,  // Assuming you have defined a region of interest (geometry)
+//   scale: 10,          // Adjust the scale as needed based on your data
+//   maxPixels: 1e13     // Set a maximum number of pixels to consider
+// });
+
+// // Get the pixel count value
+// var count = ee.Number(pixelCount.get('sum'));
+// print('Number of Pixels:', count); 
+
+
+// Merge points together
+var newfc = flooded.merge(nonflooded);
+print(newfc, 'newfc');
+
+Map.addLayer(newfc)
+
+// Select the bands for training
+var bands = ['sum', 'sum_1', 'sum_2'];
+
+// Sample the input imagery to get a FeatureCollection of training data.
+var training = inputFeatures.select(bands).sampleRegions({
+  collection: newfc,
+  properties: ['LC'],
+  scale: 30 
+});
+
+// Make a Random Forest classifier and train it.
+var classifier = ee.Classifier.smileRandomForest(50).train({
+  features: training,
+  classProperty: 'LC',
+  inputProperties: bands
+});
+
+// Classify the input imagery.
+var classified = inputFeatures.select(bands).classify(classifier);
+
+// Define a palette for the Land Use classification.
+var palette = [
+  'D3D3D3', // urban (0)  // grey
+  '0000FF', // water (1)  // blue
+];
+
+// Display the classification result and the input image.
+// Map.addLayer(classified, {min: 0, max: 1, palette: palette}, 'Land Use Classification');
+
+var flood = classified.updateMask(classified.eq(1)); // mask it
+Map.addLayer(flood, {}, 'Flooded');
+
+
+// Refinement/////////////////////////////////
+//////////////////////////////////////////////
+// Mask out areas with permanent/semi-permanent water
+var permanentWater = gsw.select('seasonality').gte(5).clip(geometry);
+var flooded = flood.where(permanentWater, 0).selfMask();
+Map.addLayer(permanentWater.selfMask(), {min: 0, max: 1, palette: ['blue']}, 'Permanent Water');
+
+// Mask out areas with more than 5 percent slope using the HydroSHEDS DEM
+var slopeThreshold = 5;
+var terrain = ee.Algorithms.Terrain(hydrosheds);
+var slope = terrain.select('slope');
+var flooded = flooded.updateMask(slope.lt(slopeThreshold));
+Map.addLayer(slope.gte(slopeThreshold).selfMask(), {min: 0, max: 1, palette: ['cyan']}, 'Steep Areas', false);
+
+// Remove isolated pixels
+var connectedPixelThreshold = 8;
+var connections = flooded.connectedPixelCount(8);
+var flooded = flooded.updateMask(connections.gt(connectedPixelThreshold));
+Map.addLayer(connections.lte(connectedPixelThreshold).selfMask(), {min: 0, max: 1, palette: ['yellow']}, 'Disconnected Areas', false);
+
+// Display the refined flood map
+Map.addLayer(flooded, {min: 0, max: 1, palette: ['red']}, 'Refined Flood Map');
+////////////////////////////////////////////////////////////////////////////////
+
+
+//############################
+// Speckle Filtering Functions
+//############################
+
+// Function to convert from dB
+function toNatural(img) {
+  return ee.Image(10.0).pow(img.select(0).divide(10.0));
+}
+
+//Function to convert to dB
+function toDB(img) {
+  return ee.Image(img).log10().multiply(10.0);
+}
+
+//Apllying a Refined Lee Speckle filter as coded in the SNAP 3.0 S1TBX:
+
+//https://github.com/senbox-org/s1tbx/blob/master/s1tbx-op-sar-processing/src/main/java/org/esa/s1tbx/sar/gpf/filtering/SpeckleFilters/RefinedLee.java
+//Adapted by Guido Lemoine
+
+// by Guido Lemoine
+function RefinedLee(img) {
+  // img must be in natural units, i.e. not in dB!
+  // Set up 3x3 kernels 
+  var weights3 = ee.List.repeat(ee.List.repeat(1,3),3);
+  var kernel3 = ee.Kernel.fixed(3,3, weights3, 1, 1, false);
+
+  var mean3 = img.reduceNeighborhood(ee.Reducer.mean(), kernel3);
+  var variance3 = img.reduceNeighborhood(ee.Reducer.variance(), kernel3);
+
+  // Use a sample of the 3x3 windows inside a 7x7 windows to determine gradients and directions
+  var sample_weights = ee.List([[0,0,0,0,0,0,0], [0,1,0,1,0,1,0],[0,0,0,0,0,0,0], [0,1,0,1,0,1,0], [0,0,0,0,0,0,0], [0,1,0,1,0,1,0],[0,0,0,0,0,0,0]]);
+
+  var sample_kernel = ee.Kernel.fixed(7,7, sample_weights, 3,3, false);
+
+  // Calculate mean and variance for the sampled windows and store as 9 bands
+  var sample_mean = mean3.neighborhoodToBands(sample_kernel); 
+  var sample_var = variance3.neighborhoodToBands(sample_kernel);
+
+  // Determine the 4 gradients for the sampled windows
+  var gradients = sample_mean.select(1).subtract(sample_mean.select(7)).abs();
+  gradients = gradients.addBands(sample_mean.select(6).subtract(sample_mean.select(2)).abs());
+  gradients = gradients.addBands(sample_mean.select(3).subtract(sample_mean.select(5)).abs());
+  gradients = gradients.addBands(sample_mean.select(0).subtract(sample_mean.select(8)).abs());
+
+  // And find the maximum gradient amongst gradient bands
+  var max_gradient = gradients.reduce(ee.Reducer.max());
+
+  // Create a mask for band pixels that are the maximum gradient
+  var gradmask = gradients.eq(max_gradient);
+
+  // duplicate gradmask bands: each gradient represents 2 directions
+  gradmask = gradmask.addBands(gradmask);
+
+  // Determine the 8 directions
+  var directions = sample_mean.select(1).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(7))).multiply(1);
+  directions = directions.addBands(sample_mean.select(6).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(2))).multiply(2));
+  directions = directions.addBands(sample_mean.select(3).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(5))).multiply(3));
+  directions = directions.addBands(sample_mean.select(0).subtract(sample_mean.select(4)).gt(sample_mean.select(4).subtract(sample_mean.select(8))).multiply(4));
+  // The next 4 are the not() of the previous 4
+  directions = directions.addBands(directions.select(0).not().multiply(5));
+  directions = directions.addBands(directions.select(1).not().multiply(6));
+  directions = directions.addBands(directions.select(2).not().multiply(7));
+  directions = directions.addBands(directions.select(3).not().multiply(8));
+
+  // Mask all values that are not 1-8
+  directions = directions.updateMask(gradmask);
+
+  // "collapse" the stack into a singe band image (due to masking, each pixel has just one value (1-8) in it's directional band, and is otherwise masked)
+  directions = directions.reduce(ee.Reducer.sum());  
+
+  //var pal = ['ffffff','ff0000','ffff00', '00ff00', '00ffff', '0000ff', 'ff00ff', '000000'];
+  //Map.addLayer(directions.reduce(ee.Reducer.sum()), {min:1, max:8, palette: pal}, 'Directions', false);
+
+  var sample_stats = sample_var.divide(sample_mean.multiply(sample_mean));
+
+  // Calculate localNoiseVariance
+  var sigmaV = sample_stats.toArray().arraySort().arraySlice(0,0,5).arrayReduce(ee.Reducer.mean(), [0]);
+
+  // Set up the 7*7 kernels for directional statistics
+  var rect_weights = ee.List.repeat(ee.List.repeat(0,7),3).cat(ee.List.repeat(ee.List.repeat(1,7),4));
+
+  var diag_weights = ee.List([[1,0,0,0,0,0,0], [1,1,0,0,0,0,0], [1,1,1,0,0,0,0], 
+    [1,1,1,1,0,0,0], [1,1,1,1,1,0,0], [1,1,1,1,1,1,0], [1,1,1,1,1,1,1]]);
+
+  var rect_kernel = ee.Kernel.fixed(7,7, rect_weights, 3, 3, false);
+  var diag_kernel = ee.Kernel.fixed(7,7, diag_weights, 3, 3, false);
+
+  // Create stacks for mean and variance using the original kernels. Mask with relevant direction.
+  var dir_mean = img.reduceNeighborhood(ee.Reducer.mean(), rect_kernel).updateMask(directions.eq(1));
+  var dir_var = img.reduceNeighborhood(ee.Reducer.variance(), rect_kernel).updateMask(directions.eq(1));
+
+  dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), diag_kernel).updateMask(directions.eq(2)));
+  dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), diag_kernel).updateMask(directions.eq(2)));
+
+  // and add the bands for rotated kernels
+  for (var i=1; i<4; i++) {
+    dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), rect_kernel.rotate(i)).updateMask(directions.eq(2*i+1)));
+    dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), rect_kernel.rotate(i)).updateMask(directions.eq(2*i+1)));
+    dir_mean = dir_mean.addBands(img.reduceNeighborhood(ee.Reducer.mean(), diag_kernel.rotate(i)).updateMask(directions.eq(2*i+2)));
+    dir_var = dir_var.addBands(img.reduceNeighborhood(ee.Reducer.variance(), diag_kernel.rotate(i)).updateMask(directions.eq(2*i+2)));
+  }
+
+  // "collapse" the stack into a single band image (due to masking, each pixel has just one value in it's directional band, and is otherwise masked)
+  dir_mean = dir_mean.reduce(ee.Reducer.sum());
+  dir_var = dir_var.reduce(ee.Reducer.sum());
+
+  // A finally generate the filtered value
+  var varX = dir_var.subtract(dir_mean.multiply(dir_mean).multiply(sigmaV)).divide(sigmaV.add(1.0));
+
+  var b = varX.divide(dir_var);
+
+  var result = dir_mean.add(b.multiply(img.subtract(dir_mean)));
+  return(result.arrayFlatten([['sum']]));
+}
+
+///////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+
